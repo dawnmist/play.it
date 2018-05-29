@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20180529.1
 
 # Set game-specific variables
 
@@ -58,6 +58,9 @@ ARCHIVE_HUMBLE_VERSION='1.3.0-humble160519'
 ARCHIVE_LIBSSL_32='libssl_1.0.0_32-bit.tar.gz'
 ARCHIVE_LIBSSL_32_MD5='9443cad4a640b2512920495eaf7582c4'
 
+ARCHIVE_LIBCURL3_32='libcurl3_7.60.0_32-bit.tar.gz'
+ARCHIVE_LIBCURL3_32_MD5='7206100f065d52de5a4c0b49644aa052'
+
 ARCHIVE_DOC_PATH_GOG='data/noarch/docs'
 ARCHIVE_DOC_FILES_GOG='./*'
 
@@ -71,9 +74,7 @@ ARCHIVE_GAME_DATA_FILES='./assets'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE='Risk_of_Rain'
-APP_MAIN_ICONS_LIST='APP_MAIN_ICON'
 APP_MAIN_ICON='assets/icon.png'
-APP_MAIN_ICON_RES='256'
 
 PACKAGES_LIST='PKG_DATA PKG_BIN'
 
@@ -81,21 +82,30 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu openal libxrandr"
-PKG_BIN_DEPS_ARCH='lib32-curl lib32-openssl-1.0'
-PKG_BIN_DEPS_DEB='libcurl3'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu openal libxrandr libcurl"
+PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
 
 # Load common functions
 
-target_version='2.5'
+target_version='2.9'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
-	if [ -e "$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh" ]; then
-		PLAYIT_LIB2="$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh"
-	elif [ -e './libplayit2.sh' ]; then
-		PLAYIT_LIB2='./libplayit2.sh'
-	else
+	for path in\
+		'./'\
+		"$XDG_DATA_HOME/play.it/"\
+		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
+		'/usr/local/share/games/play.it/'\
+		'/usr/local/share/play.it/'\
+		'/usr/share/games/play.it/'\
+		'/usr/share/play.it/'
+	do
+		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+			PLAYIT_LIB2="$path/libplayit2.sh"
+			break
+		fi
+	done
+	if [ -z "$PLAYIT_LIB2" ]; then
 		printf '\n\033[1;31mError:\033[0m\n'
 		printf 'libplayit2.sh not found.\n'
 		return 1
@@ -107,19 +117,20 @@ fi
 
 if [ "$OPTION_PACKAGE" != 'arch' ]; then
 	ARCHIVE_MAIN="$ARCHIVE"
-	set_archive 'ARCHIVE_LIBSSL' 'ARCHIVE_LIBSSL_32'
+	archive_set 'ARCHIVE_LIBSSL' 'ARCHIVE_LIBSSL_32'
 	ARCHIVE="$ARCHIVE_MAIN"
 fi
+
+# Use libcurl 3 32-bit archive
+
+ARCHIVE_MAIN="$ARCHIVE"
+archive_set 'ARCHIVE_LIBCURL' 'ARCHIVE_LIBCURL3_32'
+ARCHIVE="$ARCHIVE_MAIN"
 
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-
-for PKG in $PACKAGES_LIST; do
-	organize_data "DOC_${PKG#PKG_}"  "$PATH_DOC"
-	organize_data "GAME_${PKG#PKG_}" "$PATH_GAME"
-done
-
+prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Include libSSL into the game directory
@@ -129,10 +140,27 @@ if [ "$ARCHIVE_LIBSSL" ]; then
 		ARCHIVE='ARCHIVE_LIBSSL'
 		extract_data_from "$ARCHIVE_LIBSSL"
 	)
-	dir='libs'
+	dir="$APP_MAIN_LIBS"
+	[ -n "$dir" ] || dir='libs'
+	APP_MAIN_LIBS="$dir"
 	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$dir"
 	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$dir"
 	APP_MAIN_LIBS="$dir"
+	rm --recursive "$PLAYIT_WORKDIR/gamedata"
+fi
+
+# Include libcurl into the game directory
+
+if [ "$ARCHIVE_LIBCURL" ]; then
+	(
+		ARCHIVE='ARCHIVE_LIBCURL'
+		extract_data_from "$ARCHIVE_LIBCURL"
+	)
+	dir="$APP_MAIN_LIBS"
+	[ -n "$dir" ] || dir='libs'
+	APP_MAIN_LIBS="$dir"
+	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$dir"
+	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$dir"
 	rm --recursive "$PLAYIT_WORKDIR/gamedata"
 fi
 
@@ -143,8 +171,30 @@ write_launcher 'APP_MAIN'
 
 # Build package
 
-postinst_icons_linking 'APP_MAIN'
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_MAIN'
 write_metadata 'PKG_DATA'
+
+cat > "$postinst" << EOF
+if [ -e "$PATH_GAME/$APP_MAIN_LIBS/libcurl.so.4.5.0" ]; then
+	if [ ! -e "$PATH_GAME/$APP_MAIN_LIBS/libcurl.so.4" ]; then
+		ln --symbolic 'libcurl.so.4.5.0' "$PATH_GAME/$APP_MAIN_LIBS/libcurl.so.4"
+	fi
+	if [ ! -e "$PATH_GAME/$APP_MAIN_LIBS/libcurl.so.3" ]; then
+		ln --symbolic 'libcurl.so.4.5.0' "$PATH_GAME/$APP_MAIN_LIBS/libcurl.so.3"
+	fi
+fi
+EOF
+
+cat > "$prerm" << EOF
+if [ -e "$PATH_GAME/$APP_MAIN_LIBS/libcurl.so.4" ]; then
+	rm "$PATH_GAME/$APP_MAIN_LIBS/libcurl.so.4"
+fi
+if [ -e "$PATH_GAME/$APP_MAIN_LIBS/libcurl.so.3" ]; then
+	rm "$PATH_GAME/$APP_MAIN_LIBS/libcurl.so.3"
+fi
+EOF
+
 write_metadata 'PKG_BIN'
 build_pkg
 
