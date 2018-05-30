@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180530.1
+script_version=20180530.2
 
 # Set game-specific variables
 
@@ -69,8 +69,20 @@ ARCHIVE_GAME_PACK1_FILES='./CookedPC/pack0.dzip.split00'
 ARCHIVE_GAME_PACK2_PATH='data/noarch/game'
 ARCHIVE_GAME_PACK2_FILES='./CookedPC/pack0.dzip.split01 ./CookedPC/pack0.dzip.split02'
 
-ARCHIVE_GAME_MOVIES_PATH='data/noarch/game'
-ARCHIVE_GAME_MOVIES_FILES='./CookedPC/movies'
+ARCHIVE_GAME_VOICES_DE_PATH='data/noarch/game'
+ARCHIVE_GAME_VOICES_DE_FILES='./CookedPC/de0.w2speech'
+
+ARCHIVE_GAME_VOICES_EN_PATH='data/noarch/game'
+ARCHIVE_GAME_VOICES_EN_FILES='./CookedPC/en0.w2speech'
+
+ARCHIVE_GAME_VOICES_FR_PATH='data/noarch/game'
+ARCHIVE_GAME_VOICES_FR_FILES='./CookedPC/fr0.w2speech'
+
+ARCHIVE_GAME_VOICES_PL_PATH='data/noarch/game'
+ARCHIVE_GAME_VOICES_PL_FILES='./CookedPC/pl0.w2speech'
+
+ARCHIVE_GAME_VOICES_RU_PATH='data/noarch/game'
+ARCHIVE_GAME_VOICES_RU_FILES='./CookedPC/ru0.w2speech'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='./CookedPC ./fontconfig ./icudt52l.dat ./linux ./SDLGamepad.config ./VPFS_registry.vpfsdb ./witcher2.vpfs'
@@ -86,7 +98,7 @@ APP_CONFIG_NAME="$GAME_NAME - configuration"
 APP_CONFIG_ICON='linux/icons/witcher2-configurator.png'
 APP_CONFIG_CAT='Settings'
 
-PACKAGES_LIST='PKG_BIN PKG_PACK1 PKG_PACK2 PKG_MOVIES PKG_DATA'
+PACKAGES_LIST='PKG_BIN PKG_PACK1 PKG_PACK2 PKG_VOICES_DE PKG_VOICES_EN PKG_VOICES_FR PKG_VOICES_PL PKG_VOICES_RU PKG_DATA'
 
 PKG_PACK1_ID="${GAME_ID}-pack1"
 PKG_PACK1_DESCRIPTION='pack0, part 1'
@@ -94,14 +106,34 @@ PKG_PACK1_DESCRIPTION='pack0, part 1'
 PKG_PACK2_ID="${GAME_ID}-pack2"
 PKG_PACK2_DESCRIPTION='pack0, part 2'
 
-PKG_MOVIES_ID="${GAME_ID}-movies"
-PKG_MOVIES_DESCRIPTION='movies'
+PKG_VOICES_ID="${GAME_ID}-voices"
+PKG_VOICES_DESCRIPTION='voices'
+
+PKG_VOICES_DE_ID="${PKG_VOICES_ID}-de"
+PKG_VOICES_DE_PROVIDE="$PKG_VOICES_ID"
+PKG_VOICES_DE_DESCRIPTION="$PKG_VOICES_DESCRIPTION - German"
+
+PKG_VOICES_EN_ID="${PKG_VOICES_ID}-en"
+PKG_VOICES_EN_PROVIDE="$PKG_VOICES_ID"
+PKG_VOICES_EN_DESCRIPTION="$PKG_VOICES_DESCRIPTION - English"
+
+PKG_VOICES_FR_ID="${PKG_VOICES_ID}-fr"
+PKG_VOICES_FR_PROVIDE="$PKG_VOICES_ID"
+PKG_VOICES_FR_DESCRIPTION="$PKG_VOICES_DESCRIPTION - French"
+
+PKG_VOICES_PL_ID="${PKG_VOICES_ID}-pl"
+PKG_VOICES_PL_PROVIDE="$PKG_VOICES_ID"
+PKG_VOICES_PL_DESCRIPTION="$PKG_VOICES_DESCRIPTION - Polish"
+
+PKG_VOICES_RU_ID="${PKG_VOICES_ID}-ru"
+PKG_VOICES_RU_PROVIDE="$PKG_VOICES_ID"
+PKG_VOICES_RU_DESCRIPTION="$PKG_VOICES_DESCRIPTION - Russian"
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_PACK1_ID $PKG_PACK2_ID $PKG_MOVIES_ID $PKG_DATA_ID alsa gtk2 sdl2_image freetype libcurl"
+PKG_BIN_DEPS="$PKG_PACK1_ID $PKG_PACK2_ID $PKG_VOICES_ID $PKG_DATA_ID alsa gtk2 sdl2_image freetype libcurl"
 PKG_BIN_DEPS_DEB='libtxc-dxtn-s2tc0 | libtxc-dxtn0, libudev1'
 PKG_BIN_DEPS_ARCH='lib32-libtxc_dxtn'
 
@@ -160,7 +192,7 @@ rm "$PATH_GAME/CookedPC/pack0.dzip"
 EOF
 write_metadata 'PKG_BIN'
 
-write_metadata 'PKG_PACK1' 'PKG_PACK2' 'PKG_MOVIES'
+write_metadata 'PKG_PACK1' 'PKG_PACK2' 'PKG_VOICES_DE' 'PKG_VOICES_EN' 'PKG_VOICES_FR' 'PKG_VOICES_PL' 'PKG_VOICES_RU'
 build_pkg
 
 # Clean up
@@ -169,6 +201,34 @@ rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
-print_instructions
+case "${LANG%_*}" in
+	('fr')
+		lang_string='voix %s :'
+		lang_de='allemandes'
+		lang_en='anglaises'
+		lang_fr='françaises'
+		lang_pl='polonaises'
+		lang_ru='russes'
+	;;
+	('en'|*)
+		lang_string='%s voices:'
+		lang_de='German'
+		lang_en='English'
+		lang_fr='French'
+		lang_pl='Polish'
+		lang_ru='Russian'
+	;;
+esac
+printf '\n'
+printf "$lang_string" "$lang_de"
+print_instructions 'PKG_BIN' 'PKG_PACK1' 'PKG_PACK2' 'PKG_VOICES_DE' 'PKG_DATA'
+printf "$lang_string" "$lang_en"
+print_instructions 'PKG_BIN' 'PKG_PACK1' 'PKG_PACK2' 'PKG_VOICES_EN' 'PKG_DATA'
+printf "$lang_string" "$lang_fr"
+print_instructions 'PKG_BIN' 'PKG_PACK1' 'PKG_PACK2' 'PKG_VOICES_FR' 'PKG_DATA'
+printf "$lang_string" "$lang_pl"
+print_instructions 'PKG_BIN' 'PKG_PACK1' 'PKG_PACK2' 'PKG_VOICES_PL' 'PKG_DATA'
+printf "$lang_string" "$lang_ru"
+print_instructions 'PKG_BIN' 'PKG_PACK1' 'PKG_PACK2' 'PKG_VOICES_RU' 'PKG_DATA'
 
 exit 0
