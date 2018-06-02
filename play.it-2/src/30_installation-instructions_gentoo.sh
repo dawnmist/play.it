@@ -17,6 +17,6 @@ print_instructions_gentoo() {
 		fi
 		printf "$str_format" "$pkg_path"
 	done
-	printf '\n'
+	printf ' # %s\n' 'https://github.com/zoobab/quickunpkg'
 }
 
