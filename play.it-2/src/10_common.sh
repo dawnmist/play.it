@@ -1,6 +1,6 @@
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
-# CALLS: liberror set_architecture_arch set_architecture_deb
+# CALLS: liberror set_architecture_arch set_architecture_deb set_architecture_gentoo
 # NEEDED VARS: (ARCHIVE) (OPTION_PACKAGE) (PKG_ARCH)
 # CALLED BY: set_temp_directories write_metadata
 set_architecture() {
@@ -14,8 +14,33 @@ set_architecture() {
 		('deb')
 			set_architecture_deb "$architecture"
 		;;
+		('gentoo')
+			set_architecture_gentoo "$architecture"
+		;;
 		(*)
 			liberror 'OPTION_PACKAGE' 'set_architecture'
+		;;
+	esac
+}
+
+# set package distribution-specific single architecture
+# USAGE: set_architecture_single $pkg
+# CALLS: liberror set_architecture set_architecture_gentoo
+# NEEDED VARS: (ARCHIVE) (OPTION_PACKAGE) (PKG_ARCH)
+# CALLED BY: write_bin write_bin_set_native_noprefix
+set_architecture_single() {
+	case $OPTION_PACKAGE in
+		('arch'|'deb')
+			set_architecture "$1"
+		;;
+		('gentoo')
+			use_archive_specific_value "${1}_ARCH"
+			local architecture
+			architecture="$(eval printf -- '%b' \"\$${1}_ARCH\")"
+			set_architecture_gentoo_single "$architecture"
+		;;
+		(*)
+			liberror 'OPTION_PACKAGE' 'set_architecture_single'
 		;;
 	esac
 }

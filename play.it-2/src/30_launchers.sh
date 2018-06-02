@@ -91,13 +91,21 @@ write_bin() {
 			write_bin_set_native_noprefix
 		else
 			# Set executable, options and libraries
+			local library_path
+			library_path="$app_libs"
+			if [ "$OPTION_PACKAGE" = 'gentoo' ]; then # Add debiancompat directory to LD_LIBRARY_PATH if necessary
+				local pkg_architecture
+				set_architecture_single "$PKG"
+				library_path="$library_path:\$(portageq envvar LIBDIR_$pkg_architecture)/debiancompat"
+			fi
+			library_path="$library_path:\$LD_LIBRARY_PATH"
 			if [ "$app_id" != "${GAME_ID}_winecfg" ]; then
 				cat >> "$file" <<- EOF
 				# Set executable file
 
 				APP_EXE='$app_exe'
 				APP_OPTIONS="$app_options"
-				LD_LIBRARY_PATH="$app_libs:\$LD_LIBRARY_PATH"
+				LD_LIBRARY_PATH="$library_path"
 				export LD_LIBRARY_PATH
 
 				EOF

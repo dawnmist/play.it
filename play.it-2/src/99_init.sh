@@ -30,7 +30,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	ALLOWED_VALUES_ARCHITECTURE='all 32 64 auto'
 	ALLOWED_VALUES_CHECKSUM='none md5'
 	ALLOWED_VALUES_COMPRESSION='none gzip xz'
-	ALLOWED_VALUES_PACKAGE='arch deb'
+	ALLOWED_VALUES_PACKAGE='arch deb gentoo'
 
 	# Set default values for common options
 
@@ -173,7 +173,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	# Set package paths
 
 	case $OPTION_PACKAGE in
-		('arch')
+		('arch'|'gentoo')
 			PATH_BIN="$OPTION_PREFIX/bin"
 			PATH_DESK='/usr/local/share/applications'
 			PATH_DOC="$OPTION_PREFIX/share/doc/$GAME_ID"

@@ -47,6 +47,9 @@ print_instructions() {
 			('deb')
 				print_instructions_deb "$@"
 			;;
+			('gentoo')
+				print_instructions_gentoo "$@"
+			;;
 			(*)
 				liberror 'OPTION_PACKAGE' 'print_instructions'
 			;;
@@ -57,7 +60,7 @@ print_instructions() {
 
 # print installation instructions for Arch Linux - 32-bit version
 # USAGE: print_instructions_architecture_specific $pkg[…]
-# CALLS: print_instructions_arch print_instructions_deb
+# CALLS: print_instructions_arch print_instructions_deb print_instructions_gentoo
 print_instructions_architecture_specific() {
 	case "${LANG%_*}" in
 		('fr')
@@ -75,6 +78,9 @@ print_instructions_architecture_specific() {
 		;;
 		('deb')
 			print_instructions_deb "$@"
+		;;
+		('gentoo')
+			print_instructions_gentoo "$@"
 		;;
 		(*)
 			liberror 'OPTION_PACKAGE' 'print_instructions'

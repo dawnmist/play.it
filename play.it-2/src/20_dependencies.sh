@@ -44,6 +44,9 @@ check_deps() {
 	if [ "$OPTION_PACKAGE" = 'deb' ]; then
 		SCRIPT_DEPS="$SCRIPT_DEPS fakeroot dpkg"
 	fi
+	if [ "$OPTION_PACKAGE" = 'gentoo' ]; then
+		SCRIPTS_DEPS="$SCRIPTS_DEPS fakeroot"
+	fi
 	for dep in $SCRIPT_DEPS; do
 		case $dep in
 			('7z')

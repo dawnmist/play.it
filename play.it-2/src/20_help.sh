@@ -182,21 +182,25 @@ help_package() {
 			string_default='(type par défaut)'
 			string_arch='paquet .pkg.tar (Arch Linux)'
 			string_deb='paquet .deb (Debian, Ubuntu)'
+			string_gentoo='paquet .tbz2 (Gentoo)'
 		;;
 		('en'|*)
 			string='Generated package Type choice'
 			string_default='(default type)'
 			string_arch='.pkg.tar package (Arch Linux)'
 			string_deb='.deb package (Debian, Ubuntu)'
+			string_gentoo='.tbz2 package (Gentoo)'
 		;;
 	esac
-	printf -- '--package=arch|deb\n'
-	printf -- '--package arch|deb\n\n'
+	printf -- '--package=arch|deb|gentoo\n'
+	printf -- '--package arch|deb|gentoo\n\n'
 	printf '\t%s\n\n' "$string"
 	printf '\tarch\t%s' "$string_arch"
 	[ "$DEFAULT_OPTION_PACKAGE" = 'arch' ] && printf ' %s\n' "$string_default" || printf '\n'
 	printf '\tdeb\t%s' "$string_deb"
 	[ "$DEFAULT_OPTION_PACKAGE" = 'deb' ] && printf ' %s\n' "$string_default" || printf '\n'
+	printf '\tgentoo\t%s' "$string_gentoo"
+	[ "$DEFAULT_OPTION_PACKAGE" = 'gentoo' ] && printf ' %s\n' "$string_default" || printf '\n'
 }
 
 # display --dry-run option usage

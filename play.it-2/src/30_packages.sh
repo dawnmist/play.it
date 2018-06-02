@@ -1,7 +1,7 @@
 # write package meta-data
 # USAGE: write_metadata [$pkg…]
 # NEEDED VARS: (ARCHIVE) GAME_NAME (OPTION_PACKAGE) PACKAGES_LIST (PKG_ARCH) PKG_DEPS_ARCH PKG_DEPS_DEB PKG_DESCRIPTION PKG_ID (PKG_PATH) PKG_PROVIDE
-# CALLS: liberror pkg_write_arch pkg_write_deb set_architecture testvar
+# CALLS: liberror pkg_write_arch pkg_write_deb pkg_write_gentoo set_architecture testvar
 write_metadata() {
 	if [ $# = 0 ]; then
 		write_metadata $PACKAGES_LIST
@@ -39,6 +39,9 @@ write_metadata() {
 			('deb')
 				pkg_write_deb
 			;;
+			('gentoo')
+				pkg_write_gentoo
+			;;
 			(*)
 				liberror 'OPTION_PACKAGE' 'write_metadata'
 			;;
@@ -50,7 +53,7 @@ write_metadata() {
 # build .pkg.tar or .deb package
 # USAGE: build_pkg [$pkg…]
 # NEEDED VARS: (OPTION_COMPRESSION) (LANG) (OPTION_PACKAGE) PACKAGES_LIST (PKG_PATH) PLAYIT_WORKDIR
-# CALLS: liberror pkg_build_arch pkg_build_deb testvar
+# CALLS: liberror pkg_build_arch pkg_build_deb pkg_build_gentoo testvar
 build_pkg() {
 	if [ $# = 0 ]; then
 		build_pkg $PACKAGES_LIST
@@ -72,6 +75,9 @@ build_pkg() {
 			('deb')
 				pkg_build_deb "$pkg_path"
 			;;
+			('gentoo')
+				pkg_build_gentoo "$pkg_path"
+			;;
 			(*)
 				liberror 'OPTION_PACKAGE' 'build_pkg'
 			;;
@@ -82,7 +88,7 @@ build_pkg() {
 # print package building message
 # USAGE: pkg_print $file
 # NEEDED VARS: (LANG)
-# CALLED BY: pkg_build_arch pkg_build_deb
+# CALLED BY: pkg_build_arch pkg_build_deb pkg_build_gentoo
 pkg_print() {
 	local string
 	case "${LANG%_*}" in
@@ -99,7 +105,7 @@ pkg_print() {
 # print package building message
 # USAGE: pkg_build_print_already_exists $file
 # NEEDED VARS: (LANG)
-# CALLED BY: pkg_build_arch pkg_build_deb
+# CALLED BY: pkg_build_arch pkg_build_deb pkg_build_gentoo
 pkg_build_print_already_exists() {
 	local string
 	case "${LANG%_*}" in
@@ -135,6 +141,9 @@ packages_guess_format() {
 		('arch'|\
 		 'manjaro'|'manjarolinux')
 			eval $variable_name=\'arch\'
+		;;
+		('gentoo')
+			eval $variable_name=\'gentoo\'
 		;;
 		(*)
 			print_warning
