@@ -20,8 +20,7 @@ pkg_write_gentoo() {
 	mkdir --parents \
 		"$PLAYIT_WORKDIR/gentoo-overlay/metadata" \
 		"$PLAYIT_WORKDIR/gentoo-overlay/profiles" \
-		"$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/files" \
-		"$PLAYIT_WORKDIR/portage-tmpdir"
+		"$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/files"
 	echo 'masters = gentoo steam-overlay' > "$PLAYIT_WORKDIR/gentoo-overlay/metadata/layout.conf"
 	echo 'games-playit' > "$PLAYIT_WORKDIR/gentoo-overlay/profiles/categories"
 	ln --symbolic "$pkg_path" "$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/files/install"
@@ -231,11 +230,13 @@ pkg_build_gentoo() {
 		return 0
 	fi
 
+	mkdir --parents "$PLAYIT_WORKDIR/portage-tmpdir"
 	pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\" | sed 's/-/_/g')"
 	local ebuild_path="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-${PKG_VERSION%-*}.ebuild"
 	ebuild "$ebuild_path" manifest
 	PORTAGE_TMPDIR="$PLAYIT_WORKDIR/portage-tmpdir" PKGDIR="$PLAYIT_WORKDIR/gentoo-pkgdir" fakeroot -- ebuild "$ebuild_path" package
 	mv "$PLAYIT_WORKDIR/gentoo-pkgdir/games-playit/$pkg_id-${PKG_VERSION%-*}.tbz2" "$pkg_filename"
+	rm -r "$PLAYIT_WORDIR/portage-tmpdir"
 
 	eval ${pkg}_PKG=\"$pkg_filename\"
 	export ${pkg}_PKG
