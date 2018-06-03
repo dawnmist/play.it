@@ -138,7 +138,7 @@ pkg_set_deps_gentoo() {
 				pkg_dep="dev-libs/json-c$architecture_suffix"
 			;;
 			('libcurl-gnutls')
-				pkg_dep="net-misc/libcurl-debian$architecture_suffix" #available in the steam overlay
+				pkg_dep="net-libs/libcurl-debian$architecture_suffix" #available in the steam overlay
 			;;
 			('libstdc++')
 				pkg_dep='' #maybe this should be virtual/libstdc++, otherwise, it is included in gcc, which should be in @system
