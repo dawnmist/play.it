@@ -49,19 +49,8 @@ pkg_write_gentoo() {
 	EOF
 
 	cat >> "$target" <<- EOF
-	RDEPEND="
-	EOF
-	for dep in $pkg_deps; do
-		cat >> "$target" <<- EOF
-		$dep
-		EOF
-	done
-	cat >> "$target" <<- EOF
-	"
+	RDEPEND="$pkg_deps"
 
-	EOF
-
-	cat >> "$target" <<- EOF
 	src_unpack() {
 		mkdir -p "\$S"
 	}
