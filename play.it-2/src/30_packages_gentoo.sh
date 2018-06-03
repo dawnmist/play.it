@@ -23,7 +23,7 @@ pkg_write_gentoo() {
 		"$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/files"
 	echo 'masters = gentoo steam-overlay' > "$PLAYIT_WORKDIR/gentoo-overlay/metadata/layout.conf"
 	echo 'games-playit' > "$PLAYIT_WORKDIR/gentoo-overlay/profiles/categories"
-	ln --symbolic --force "$pkg_path" "$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/files/install"
+	ln --symbolic --force --no-target-directory "$pkg_path" "$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/files/install"
 	local target
 	target="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-${PKG_VERSION%-*}.ebuild"
 
