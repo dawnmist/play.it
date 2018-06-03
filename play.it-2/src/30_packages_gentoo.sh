@@ -200,7 +200,7 @@ pkg_set_deps_gentoo() {
 				pkg_dep="x11-apps/xrandr$architecture_suffix"
 			;;
 			(*)
-				pkg_dep="$(printf '%s' "games-playit/$dep" | sed 's/-/_/g')"
+				pkg_dep='games-playit/'"$(printf '%s' "$dep" | sed 's/-/_/g')"
 			;;
 		esac
 		pkg_deps="$pkg_deps $pkg_dep"
