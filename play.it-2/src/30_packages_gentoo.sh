@@ -3,6 +3,8 @@
 # NEEDED VARS: GAME_NAME PKG_DEPS_GENTOO
 # CALLED BY: write_metadata
 pkg_write_gentoo() {
+	pkg_id="$(printf '%s' "$pkg_id" | sed 's/-/_/g')"
+
 	local pkg_deps
 	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS\")" ]; then
 		pkg_set_deps_gentoo $(eval printf -- '%b' \"\$${pkg}_DEPS\")
@@ -238,7 +240,7 @@ pkg_build_gentoo() {
 		return 0
 	fi
 
-	pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\")"
+	pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\" | sed 's/-/_/g')"
 	local ebuild_path="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-${PKG_VERSION%-*}.ebuild"
 	ebuild "$ebuild_path" manifest
 	PORTAGE_TMPDIR="$PLAYIT_WORKDIR/portage-tmpdir" PKGDIR="$PLAYIT_WORKDIR/gentoo-pkgdir" fakeroot -- ebuild "$ebuild_path" package
