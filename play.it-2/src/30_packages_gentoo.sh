@@ -235,7 +235,7 @@ pkg_build_gentoo() {
 	pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\" | sed 's/-/_/g')"
 	local ebuild_path="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-${PKG_VERSION%-*}.ebuild"
 	ebuild "$ebuild_path" manifest
-	PORTAGE_TMPDIR="$PLAYIT_WORKDIR/portage-tmpdir" PKGDIR="$PLAYIT_WORKDIR/gentoo-pkgdir" fakeroot -- ebuild "$ebuild_path" package
+	PORTAGE_TMPDIR="$PLAYIT_WORKDIR/portage-tmpdir" PKGDIR="$PLAYIT_WORKDIR/gentoo-pkgdir" fakeroot-ng -- ebuild "$ebuild_path" package
 	mv "$PLAYIT_WORKDIR/gentoo-pkgdir/games-playit/$pkg_id-${PKG_VERSION%-*}.tbz2" "$pkg_filename"
 	rm -r "$PLAYIT_WORKDIR/portage-tmpdir"
 
