@@ -3,7 +3,7 @@
 # NEEDED VARS: GAME_NAME PKG_DEPS_GENTOO
 # CALLED BY: write_metadata
 pkg_write_gentoo() {
-	pkg_id="$(printf '%s' "$pkg_id" | sed 's/-/_/g')"
+	pkg_id="$(printf '%s' "$pkg_id" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
 
 	local pkg_deps
 	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS\")" ]; then
@@ -262,7 +262,7 @@ pkg_build_gentoo() {
 	fi
 
 	mkdir --parents "$PLAYIT_WORKDIR/portage-tmpdir"
-	pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\" | sed 's/-/_/g')"
+	pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
 	local pkg_version="$(printf '%s' "$PKG_VERSION" | grep -Eo '^[0-9.]+[a-z]?' || echo 1)" # Portage doesn't like some of our version names (See https://devmanual.gentoo.org/ebuild-writing/file-format/index.html)
 	local ebuild_path="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-$pkg_version.ebuild"
 	ebuild "$ebuild_path" manifest
