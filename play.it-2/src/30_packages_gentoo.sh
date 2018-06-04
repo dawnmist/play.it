@@ -137,7 +137,10 @@ pkg_set_deps_gentoo() {
 				pkg_dep="gnome-base/gconf$architecture_suffix"
 			;;
 			('glibc')
-				pkg_dep="sys-libs/glibc amd64? ( sys-libs/glibc[multilib] )" #TODO: check if it works
+				pkg_dep="sys-libs/glibc"
+				if [ "$architecture" = '32' ]; then
+					pkg_dep="$pkg_dep amd64? ( sys-libs/glibc[multilib] )" #TODO: check if it works
+				fi
 			;;
 			('glu')
 				pkg_dep="virtual/glu$architecture_suffix"
