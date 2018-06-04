@@ -14,6 +14,20 @@ pkg_write_gentoo() {
 		pkg_deps="$pkg_deps $(eval printf -- '%b' \"\$${pkg}_DEPS_GENTOO\")"
 	fi
 
+	if [ -n "$pkg_provide" ]; then
+		for package in $PACKAGES_LIST; do
+			if [ "$package" != "$pkg" ]; then
+				use_archive_specific_value "${package}_PROVIDE"
+				local provide="$(eval printf -- '%b' \"\$${package}_PROVIDE\")"
+				if [ "$provide" = "$pkg_provide" ]; then
+					use_archive_specific_value "${pkg}_ID"
+					local package_id="$(eval printf -- '%b' \"\$${package}_ID\")"
+					pkg_deps="$pkg_deps !!games-playit/$package_id"
+				fi
+			fi
+		done
+	fi
+
 	PKG="$pkg"
 	get_package_version
 
@@ -200,7 +214,23 @@ pkg_set_deps_gentoo() {
 				pkg_dep="x11-apps/xrandr$architecture_suffix"
 			;;
 			(*)
-				pkg_dep='games-playit/'"$(printf '%s' "$dep" | sed 's/-/_/g')"
+				pkg_dep=''
+				local has_provides=false
+				for pkg in $PACKAGES_LIST; do
+					use_archive_specific_value "${pkg}_PROVIDE"
+					local provide="$(eval printf -- '%b' \"\$${pkg}_PROVIDE\")"
+					if [ "$provide" = "$dep" ]; then
+						has_provides=true
+						use_archive_specific_value "${pkg}_ID"
+						local pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\" | sed 's/-/_/g')"
+						pkg_dep="$pkg_dep games-playit/$pkg_id"
+					fi
+				done
+				if [ "$has_provides" != true ]; then
+					pkg_dep='games-playit/'"$(printf '%s' "$dep" | sed 's/-/_/g')"
+				else
+					pkg_dep="|| ($pkg_dep )"
+				fi
 			;;
 		esac
 		pkg_deps="$pkg_deps $pkg_dep"
