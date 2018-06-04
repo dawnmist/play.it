@@ -39,7 +39,7 @@ pkg_write_gentoo() {
 	echo 'games-playit' > "$PLAYIT_WORKDIR/gentoo-overlay/profiles/categories"
 	ln --symbolic --force --no-target-directory "$pkg_path" "$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/files/install"
 	local target
-	target="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-${PKG_VERSION%-*}.ebuild"
+	target="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-$(printf '%s' "$PKG_VERSION" | grep -Eo '^[0-9.]+[a-z]?' || echo 1).ebuild" # Portage doesn't like some of our version names (See https://devmanual.gentoo.org/ebuild-writing/file-format/index.html)
 
 	cat > "$target" <<- EOF
 	EAPI=6
@@ -263,10 +263,11 @@ pkg_build_gentoo() {
 
 	mkdir --parents "$PLAYIT_WORKDIR/portage-tmpdir"
 	pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\" | sed 's/-/_/g')"
-	local ebuild_path="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-${PKG_VERSION%-*}.ebuild"
+	local pkg_version="$(printf '%s' "$PKG_VERSION" | grep -Eo '^[0-9.]+[a-z]?' || echo 1)" # Portage doesn't like some of our version names (See https://devmanual.gentoo.org/ebuild-writing/file-format/index.html)
+	local ebuild_path="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-$pkg_version.ebuild"
 	ebuild "$ebuild_path" manifest
 	PORTAGE_TMPDIR="$PLAYIT_WORKDIR/portage-tmpdir" PKGDIR="$PLAYIT_WORKDIR/gentoo-pkgdir" fakeroot-ng -- ebuild "$ebuild_path" package
-	mv "$PLAYIT_WORKDIR/gentoo-pkgdir/games-playit/$pkg_id-${PKG_VERSION%-*}.tbz2" "$pkg_filename"
+	mv "$PLAYIT_WORKDIR/gentoo-pkgdir/games-playit/$pkg_id-$pkg_version.tbz2" "$pkg_filename"
 	rm -r "$PLAYIT_WORKDIR/portage-tmpdir"
 
 	eval ${pkg}_PKG=\"$pkg_filename\"
