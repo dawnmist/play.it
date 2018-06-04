@@ -30,9 +30,10 @@ pkg_write_gentoo() {
 	cat > "$target" <<- EOF
 	EAPI=6
 	EOF
-	#TODO: only use -* for binary packages
+	local pkg_architectures
+	set_supported_architectures "$PKG"
 	cat >> "$target" <<- EOF
-	KEYWORDS="-* $pkg_architecture"
+	KEYWORDS="$pkg_architectures"
 	EOF
 
 	if [ -n "$pkg_description" ]; then
