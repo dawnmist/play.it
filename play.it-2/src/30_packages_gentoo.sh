@@ -111,7 +111,7 @@ pkg_set_deps_gentoo() {
 				pkg_dep="app-arch/bzip2$architecture_suffix"
 			;;
 			('dosbox')
-				pkg_dep="games-emulation/dosbox$architecture_suffix"
+				pkg_dep="games-emulation/dosbox"
 			;;
 			('freetype')
 				pkg_dep="media-libs/freetype$architecture_suffix"
