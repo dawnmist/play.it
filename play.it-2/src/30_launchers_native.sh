@@ -6,7 +6,7 @@ write_bin_set_native_noprefix() {
 	if [ "$OPTION_PACKAGE" = 'gentoo' ]; then # Add debiancompat directory to LD_LIBRARY_PATH if necessary
 		local pkg_architecture
 		set_architecture "$PKG"
-		library_path="$library_path:\$(portageq envvar LIBDIR_$pkg_architecture)/debiancompat"
+		library_path="$library_path:/usr/\$(portageq envvar LIBDIR_$pkg_architecture)/debiancompat"
 	fi
 	library_path="$library_path:\$LD_LIBRARY_PATH"
 	cat >> "$file" <<- EOF
