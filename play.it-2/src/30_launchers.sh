@@ -238,16 +238,16 @@ write_bin() {
 			cat >> "$file" <<- 'EOF'
 			if [ ! -e "$PATH_PREFIX" ]; then
 			  mkdir --parents "$PATH_PREFIX"
-			  cp --force --recursive --symbolic-link --update "$PATH_GAME"/* "$PATH_PREFIX"
 			fi
+			cp --force --recursive --symbolic-link --update "$PATH_GAME"/* "$PATH_PREFIX"
 			if [ ! -e "$PATH_CONFIG" ]; then
 			  mkdir --parents "$PATH_CONFIG"
-			  init_userdir_files "$PATH_CONFIG" "$CONFIG_FILES"
 			fi
+			init_userdir_files "$PATH_CONFIG" "$CONFIG_FILES"
 			if [ ! -e "$PATH_DATA" ]; then
 			  mkdir --parents "$PATH_DATA"
-			  init_userdir_files "$PATH_DATA" "$DATA_FILES"
 			fi
+			init_userdir_files "$PATH_DATA" "$DATA_FILES"
 			init_prefix_files "$PATH_CONFIG" "$CONFIG_FILES"
 			init_prefix_files "$PATH_DATA" "$DATA_FILES"
 			init_prefix_dirs "$PATH_CONFIG" "$CONFIG_DIRS"
