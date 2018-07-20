@@ -30,7 +30,7 @@ set -o errexit
 ###
 
 ###
-# Surviving Mars
+# Digital Deluxe Upgrade for Surviving Mars.
 # build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
@@ -39,46 +39,32 @@ script_version=20180720.1
 
 # Set game-specific variables
 
+# copy GAME_ID from play-surviving-mars.sh
 GAME_ID='surviving-mars'
-GAME_NAME='Surviving Mars'
+GAME_NAME='Surviving Mars: Digital Deluxe Upgrade'
 
-ARCHIVE_GOG='surviving_mars_en_180619_curiosity_hotfix_3_21661.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/surviving_mars'
-ARCHIVE_GOG_MD5='241f1cb8305becab5d55c8d104bd2c18'
-ARCHIVE_GOG_SIZE='4100000'
-ARCHIVE_GOG_VERSION='231.777-3-gog21661'
+ARCHIVE_GOG='surviving_mars_digital_deluxe_edition_upgrade_pack_en_180619_curiosity_hotfix_3_21661.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/surviving_mars_digital_deluxe_edition_upgrade_pack'
+ARCHIVE_GOG_MD5='cef24bda9587c1923139ea0c86df317a'
+ARCHIVE_GOG_SIZE='66000'
+ARCHIVE_GOG_VERSION='3-gog21661'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
 
-ARCHIVE_GOG_OLD='surviving_mars_en_curiosity_update_21183.sh'
-ARCHIVE_GOG_OLD_MD5='ab9a61d04a128f19bc9e003214fe39a9'
-ARCHIVE_GOG_OLD_VERSION='231.139'
-ARCHIVE_GOG_OLD_SIZE='3950000'
-ARCHIVE_GOG_TYPE='mojosetup_unzip'
+ARCHIVE_GOG_OLD='surviving_mars_digital_deluxe_edition_upgrade_pack_en_180423_opportunity_rc1_20289.sh'
+ARCHIVE_GOG_OLD_MD5='a574de12f4b7f3aa1f285167109bb6a3'
+ARCHIVE_GOG_OLD_SIZE="66000"
+ARCHIVE_GOG_OLD_VERSION="1-gog20289"
 
-ARCHIVE_LIBSSL_64='libssl_1.0.0_64-bit.tar.gz'
-ARCHIVE_LIBSSL_64_MD5='89917bef5dd34a2865cb63c2287e0bd4'
+ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
+ARCHIVE_DOC_MAIN_FILES='./*'
 
-ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*'
+ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
+ARCHIVE_GAME_MAIN_FILES='./DLC'
 
-ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='./MarsGOG ./libopenal.so.1 ./libSDL2-2.0.so.0 ./libpops_api.so'
+PACKAGES_LIST='PKG_MAIN'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./DLC ./Licenses ./Local ./ModTools ./Movies ./Packs ./ShaderPreprocessorTemp'
-
-APP_MAIN_TYPE='native'
-APP_MAIN_EXE='MarsGOG'
-APP_MAIN_ICON='data/noarch/support/icon.png'
-
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-
-PACKAGES_LIST='PKG_DATA PKG_BIN'
-
-PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx"
-PKG_BIN_DEPS_ARCH='openssl-1.0'
+PKG_MAIN_ID="${GAME_ID}-digital-deluxe-upgrade-pack"
+PKG_MAIN_DEPS="$GAME_ID"
 
 # Load common functions
 
@@ -108,39 +94,11 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 . "$PLAYIT_LIB2"
 
-# Use libSSL 1.0.0 archives
-
-if [ "$OPTION_PACKAGE" != 'arch' ]; then
-	ARCHIVE_MAIN="$ARCHIVE"
-	set_archive 'ARCHIVE_LIBSSL' 'ARCHIVE_LIBSSL_64'
-	ARCHIVE="$ARCHIVE_MAIN"
-fi
-
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
-
-# Get icon
-
-PKG='PKG_DATA'
-icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
-
-# Include libSSL into the game directory
-
-if [ "$ARCHIVE_LIBSSL" ]; then
-	(
-		ARCHIVE='ARCHIVE_LIBSSL'
-		extract_data_from "$ARCHIVE_LIBSSL"
-	)
-	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}"
-	rm --recursive "$PLAYIT_WORKDIR/gamedata"
-fi
-
-# Write launchers
-PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
 
 # Build package
 
