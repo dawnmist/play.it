@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180724.1
+script_version=20180807.1
 
 # Set game-specific variables
 
@@ -43,18 +43,25 @@ script_version=20180724.1
 GAME_ID='surviving-mars'
 GAME_NAME='Surviving Mars: Digital Deluxe Upgrade'
 
-ARCHIVE_GOG='surviving_mars_digital_deluxe_edition_upgrade_pack_en_180619_curiosity_hotfix_3_21661.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/surviving_mars_digital_deluxe_edition_upgrade_pack'
-ARCHIVE_GOG_MD5='cef24bda9587c1923139ea0c86df317a'
-ARCHIVE_GOG_SIZE='66000'
-ARCHIVE_GOG_VERSION='3-gog21661'
+ARCHIVE_GOG='surviving_mars_digital_deluxe_edition_upgrade_pack_en_davinci_rc1_22763.sh'
+ARCHIVE_GOG_MD5='195f0d1a28047112ced2d9cc31df5e52'
+ARCHIVE_GOG_SIZE='67000'
+# Switching to the build number directly in future
+ARCHIVE_GOG_VERSION='22763'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
+ARCHIVE_GOG_URL='https://www.gog.com/game/surviving_mars_digital_deluxe_edition_upgrade_pack'
 
-ARCHIVE_GOG_OLD='surviving_mars_digital_deluxe_edition_upgrade_pack_en_180423_opportunity_rc1_20289.sh'
-ARCHIVE_GOG_OLD_MD5='a574de12f4b7f3aa1f285167109bb6a3'
-ARCHIVE_GOG_OLD_SIZE="66000"
-ARCHIVE_GOG_OLD_VERSION="1-gog20289"
+ARCHIVE_GOG_OLD='surviving_mars_digital_deluxe_edition_upgrade_pack_en_180619_curiosity_hotfix_3_21661.sh'
+ARCHIVE_GOG_OLD_MD5='cef24bda9587c1923139ea0c86df317a'
+ARCHIVE_GOG_OLD_SIZE='66000'
+ARCHIVE_GOG_OLD_VERSION='3-gog21661'
 ARCHIVE_GOG_OLD_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_OLDER='surviving_mars_digital_deluxe_edition_upgrade_pack_en_180423_opportunity_rc1_20289.sh'
+ARCHIVE_GOG_OLDER_MD5='a574de12f4b7f3aa1f285167109bb6a3'
+ARCHIVE_GOG_OLDER_SIZE="66000"
+ARCHIVE_GOG_OLDER_VERSION="1-gog20289"
+ARCHIVE_GOG_OLDER_TYPE='mojosetup_unzip'
 
 ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
 ARCHIVE_DOC_MAIN_FILES='./*'
