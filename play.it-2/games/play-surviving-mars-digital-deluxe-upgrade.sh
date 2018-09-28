@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180822.1
+script_version=20180928.1
 
 # Set game-specific variables
 
@@ -43,13 +43,19 @@ script_version=20180822.1
 GAME_ID='surviving-mars'
 GAME_NAME='Surviving Mars: Digital Deluxe Upgrade'
 
-ARCHIVE_GOG='surviving_mars_digital_deluxe_edition_upgrade_pack_en_davinci_rc1_22763.sh'
-ARCHIVE_GOG_MD5='195f0d1a28047112ced2d9cc31df5e52'
-ARCHIVE_GOG_SIZE='67000'
-# Switching to the build number directly in future
-ARCHIVE_GOG_VERSION='22763'
+ARCHIVE_GOG='surviving_mars_digital_deluxe_edition_upgrade_pack_sagan_rc1_update_23676.sh'
+ARCHIVE_GOG_MD5='7ba5d3ab5626f1a18015b9516adf29af'
+ARCHIVE_GOG_SIZE='66000'
+ARCHIVE_GOG_VERSION='23676'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
 ARCHIVE_GOG_URL='https://www.gog.com/game/surviving_mars_digital_deluxe_edition_upgrade_pack'
+
+ARCHIVE_GOG_OLD2='surviving_mars_digital_deluxe_edition_upgrade_pack_en_davinci_rc1_22763.sh'
+ARCHIVE_GOG_OLD2_MD5='195f0d1a28047112ced2d9cc31df5e52'
+ARCHIVE_GOG_OLD2_SIZE='67000'
+# Switching to the build number directly in future
+ARCHIVE_GOG_OLD2_VERSION='22763'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup_unzip'
 
 ARCHIVE_GOG_OLD1='surviving_mars_digital_deluxe_edition_upgrade_pack_en_180619_curiosity_hotfix_3_21661.sh'
 ARCHIVE_GOG_OLD1_MD5='cef24bda9587c1923139ea0c86df317a'

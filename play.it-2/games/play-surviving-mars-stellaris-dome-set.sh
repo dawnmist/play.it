@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180720.1
+script_version=20180928.1
 
 # Set game-specific variables
 
@@ -43,12 +43,18 @@ script_version=20180720.1
 GAME_ID='surviving-mars'
 GAME_NAME='Surviving Mars: Stellaris Dome Set'
 
-ARCHIVE_GOG='surviving_mars_stellaris_dome_set_pre_order_dlc_en_180619_curiosity_hotfix_3_21661.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/surviving_mars_stellaris_dome_set'
-ARCHIVE_GOG_MD5='01ffc529b9a0cc72e5d94830385bf7b9'
+ARCHIVE_GOG='surviving_mars_stellaris_dome_set_sagan_rc1_update_23676.sh'
+ARCHIVE_GOG_MD5='2b0f7100813779cdd847be15b6599fea'
 ARCHIVE_GOG_SIZE='4000'
-ARCHIVE_GOG_VERSION='3-gog21661'
+ARCHIVE_GOG_VERSION='23676'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
+ARCHIVE_GOG_URL='https://www.gog.com/game/surviving_mars_stellaris_dome_set'
+
+ARCHIVE_GOG_OLD0='surviving_mars_stellaris_dome_set_pre_order_dlc_en_180619_curiosity_hotfix_3_21661.sh'
+ARCHIVE_GOG_OLD0_MD5='01ffc529b9a0cc72e5d94830385bf7b9'
+ARCHIVE_GOG_OLD0_SIZE='4000'
+ARCHIVE_GOG_OLD0_VERSION='3-gog21661'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
 
 ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
 ARCHIVE_DOC_MAIN_FILES='./*'
@@ -63,7 +69,7 @@ PKG_MAIN_DEPS="$GAME_ID"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"

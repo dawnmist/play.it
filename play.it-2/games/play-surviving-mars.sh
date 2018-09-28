@@ -35,19 +35,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180822.1
+script_version=20180928.1
 
 # Set game-specific variables
 
 GAME_ID='surviving-mars'
 GAME_NAME='Surviving Mars'
 
-ARCHIVE_GOG='surviving_mars_en_davinci_rc1_22763.sh'
-ARCHIVE_GOG_MD5='aa513fee4b4c10318831712d4663bfc0'
-ARCHIVE_GOG_SIZE='4400000'
-ARCHIVE_GOG_VERSION='233.467-rc1-gog22763'
+ARCHIVE_GOG='surviving_mars_sagan_rc1_update_23676.sh'
+ARCHIVE_GOG_MD5='2e5058a9f1076f894c0b074fd24e3597'
+ARCHIVE_GOG_SIZE='4700000'
+ARCHIVE_GOG_VERSION='234.560-rc1-gog23676'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
 ARCHIVE_GOG_URL='https://www.gog.com/game/surviving_mars'
+
+ARCHIVE_GOG_OLD2='surviving_mars_en_davinci_rc1_22763.sh'
+ARCHIVE_GOG_OLD2_MD5='aa513fee4b4c10318831712d4663bfc0'
+ARCHIVE_GOG_OLD2_SIZE='4400000'
+ARCHIVE_GOG_OLD2_VERSION='233.467-rc1-gog22763'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup_unzip'
 
 ARCHIVE_GOG_OLD1='surviving_mars_en_180619_curiosity_hotfix_3_21661.sh'
 ARCHIVE_GOG_OLD1_MD5='241f1cb8305becab5d55c8d104bd2c18'
@@ -68,7 +74,7 @@ ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='./*'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='./MarsGOG ./libopenal.so.1 ./libSDL2-2.0.so.0 ./libpops_api.so'
+ARCHIVE_GAME_BIN_FILES='./MarsGOG ./libopenal.so.1 ./libSDL2-2.0.so.0 ./libpops_api.so ./pops_api.dll'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='./DLC ./Licenses ./Local ./ModTools ./Movies ./Packs ./ShaderPreprocessorTemp'
