@@ -35,19 +35,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180929.1
+script_version=20181005.1
 
 # Set game-specific variables
 
 GAME_ID='surviving-mars'
 GAME_NAME='Surviving Mars'
 
-ARCHIVE_GOG='surviving_mars_sagan_rc1_update_23676.sh'
-ARCHIVE_GOG_MD5='2e5058a9f1076f894c0b074fd24e3597'
+ARCHIVE_GOG='surviving_mars_sagan_rc3_update_24111.sh'
+ARCHIVE_GOG_MD5='22e5cbc7188ff1cb8fd5dabf7cdca0bf'
 ARCHIVE_GOG_SIZE='4700000'
-ARCHIVE_GOG_VERSION='234.560-rc1-gog23676'
+ARCHIVE_GOG_VERSION='235.636-rc3-gog24111'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
 ARCHIVE_GOG_URL='https://www.gog.com/game/surviving_mars'
+
+ARCHIVE_GOG_OLD3='surviving_mars_sagan_rc1_update_23676.sh'
+ARCHIVE_GOG_OLD3_MD5='2e5058a9f1076f894c0b074fd24e3597'
+ARCHIVE_GOG_OLD3_SIZE='4700000'
+ARCHIVE_GOG_OLD3_VERSION='234.560-rc1-gog23676'
+ARCHIVE_GOG_OLD3_TYPE='mojosetup_unzip'
 
 ARCHIVE_GOG_OLD2='surviving_mars_en_davinci_rc1_22763.sh'
 ARCHIVE_GOG_OLD2_MD5='aa513fee4b4c10318831712d4663bfc0'
